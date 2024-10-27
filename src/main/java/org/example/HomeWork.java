@@ -1,7 +1,11 @@
 package org.example;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class HomeWork {
 
@@ -11,7 +15,21 @@ public class HomeWork {
      * <a href="https://acm.timus.ru/problem.aspx?space=1&num=1439">https://acm.timus.ru/problem.aspx?space=1&num=1439</a>
      */
     public List<Integer> getOriginalDoorNumbers(int maxDoors, List<Action> actionList) {
-        return null;
+        List<Integer> res = new ArrayList<>();
+        List<Integer> doors = Arrays.stream(
+                        IntStream.range(1, maxDoors + 1).toArray()
+                )
+                .boxed()
+                .collect(Collectors.toList());
+
+        for (Action action : actionList) {
+            if (!action.isLook()) {
+                doors.remove(action.doorNumber - 1);
+            } else {
+                res.add(doors.get(action.doorNumber - 1));
+            }
+        }
+        return res;
     }
 
     /**
@@ -28,7 +46,22 @@ public class HomeWork {
      * _ <b>4</b> => 4
      */
     public List<Integer> getLeaveOrder(int maxUnits, int leaveInterval) {
-        return null;
-    }
+        List<Integer> list = new ArrayList<>();
 
+        List<Integer> array = Arrays.stream(
+                        IntStream.range(1, maxUnits + 1).toArray()
+                )
+                .boxed()
+                .collect(Collectors.toList());
+
+        int index = 0;
+
+        while (!array.isEmpty()) {
+            index = (index + leaveInterval - 1) % array.size();
+            list.add(array.get(index));
+            array.remove(index);
+        }
+
+        return list;
+    }
 }

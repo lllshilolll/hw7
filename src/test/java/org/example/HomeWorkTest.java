@@ -1,13 +1,9 @@
 package org.example;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -23,14 +19,22 @@ class HomeWorkTest {
     void checkFirst() {
         TestCase1 testCase = generateTestCase1();
 
-        assertEquals(testCase.expected, homeWork.getOriginalDoorNumbers(testCase.maxDoors, testCase.actionList));
+        assertEquals(testCase.expected,
+                homeWork.getOriginalDoorNumbers(testCase.maxDoors, testCase.actionList));
     }
 
     @Test
-    void checkSecond(){
-        assertEquals(asList("3 1 5 2 4".split(" ")), homeWork.getLeaveOrder(5, 3));
-    }
+    void checkSecond() {
+        assertEquals(Arrays.stream("3 1 5 2 4".split(" "))
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList()),
+                homeWork.getLeaveOrder(5, 3));
 
+        assertEquals(Arrays.stream("2 4 6 8 10 3 7 1 9 5".split(" "))
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList()),
+                homeWork.getLeaveOrder(10, 2));
+    }
 
     private TestCase1 generateTestCase1() {
         TestCase1 testCase = new TestCase1();
@@ -59,7 +63,7 @@ class HomeWorkTest {
 
         public void parseInput(String input) {
             String[] lines = input.split("(\n|\r|\r\n)");
-            maxDoors = Integer.valueOf(lines[0].split(" ")[0]);
+            maxDoors = Integer.parseInt(lines[0].split(" ")[0]);
             Arrays.stream(lines)
                     .skip(1)
                     .map(Action::parse)
